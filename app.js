@@ -23,6 +23,8 @@
     {title:"지금 가장 걱정되는 건 무엇인가요?",description:"가장 먼저 이야기하고 싶은 한 가지를 골라주세요.",options:["매달 갚을 돈과 생활비가 부담돼요","독촉·압류·법원 서류가 걱정돼요","가족·직장에 알려질까 걱정돼요","비용과 앞으로의 절차가 궁금해요"]},
     {title:"상담을 위해 무엇을 알고 있나요?",description:"모르거나 자료가 없어도 시작할 수 있어요.",options:["채무·소득·재산을 대략 알고 있어요","정확한 금액이나 자료가 아직 없어요","법원에서 받은 서류나 기한이 있어요"]}
   ];
+  const optionIcons = [["calendar","search","chat"],["wallet","chart","person"],["coins","shield","lock","document"],["folder","search","clock"]];
+  const icon = name => '<svg class="ui-icon option-icon" aria-hidden="true" focusable="false"><use href="#i-' + name + '"></use></svg>';
   const answers = [];
   let currentStep = 0;
   let toastTimer;
@@ -41,7 +43,7 @@
     const q = questions[currentStep];
     count.textContent = String(currentStep + 1).padStart(2,"0") + " / 04";
     progress.style.width = ((currentStep + 1) * 25) + "%";
-    container.innerHTML = '<h3 class="question-title" tabindex="-1">' + q.title + '</h3><p class="question-desc">' + q.description + '</p><div class="question-options">' + q.options.map((o,i) => '<button type="button" class="question-option' + (answers[currentStep] === i ? ' selected' : '') + '" data-answer="' + i + '">' + o + '</button>').join("") + '</div>' + (currentStep > 0 ? '<button class="question-back" type="button">← 이전 질문</button>' : '');
+    container.innerHTML = '<h3 class="question-title" tabindex="-1">' + q.title + '</h3><p class="question-desc">' + q.description + '</p><div class="question-options">' + q.options.map((o,i) => '<button type="button" class="question-option' + (answers[currentStep] === i ? ' selected' : '') + '" data-answer="' + i + '">' + icon(optionIcons[currentStep][i]) + '<span>' + o + '</span></button>').join("") + '</div>' + (currentStep > 0 ? '<button class="question-back" type="button">← 이전 질문</button>' : '');
     container.querySelectorAll("[data-answer]").forEach(button => button.addEventListener("click", () => {
       answers[currentStep] = Number(button.dataset.answer);
       if (currentStep < questions.length - 1) { currentStep++; showQuestion(true); }
