@@ -90,4 +90,29 @@
   }
   document.getElementById("year").textContent = String(new Date().getFullYear());
   showQuestion();
+
+  const videoPlayer = document.getElementById("haeram-youtube-player");
+  if (videoPlayer) {
+    const videoChoices = [...document.querySelectorAll(".youtube-choice")];
+    videoChoices.forEach(button => button.addEventListener("click", () => {
+      const id = button.dataset.videoId;
+      const title = button.dataset.videoTitle;
+      if (!/^[A-Za-z0-9_-]{11}$/.test(id)) return;
+      videoPlayer.src = "https://www.youtube.com/embed/" + id + "?autoplay=1&rel=0&playsinline=1";
+      videoPlayer.title = "해람법무사 — " + title;
+      document.getElementById("youtube-topic").textContent = button.dataset.videoTopic;
+      document.getElementById("youtube-title").textContent = title;
+      document.getElementById("youtube-watch-link").href = "https://www.youtube.com/watch?v=" + id;
+      videoChoices.forEach(choice => {
+        const active = choice === button;
+        choice.classList.toggle("is-active", active);
+        choice.setAttribute("aria-pressed", String(active));
+        choice.querySelector(".youtube-choice-state").firstChild.textContent = active ? "선택한 영상 " : "이 영상 보기 ";
+      });
+      document.getElementById("youtube-status").textContent = "선택한 영상: " + title;
+      if (window.matchMedia("(max-width:900px)").matches) {
+        videoPlayer.closest(".youtube-feature").scrollIntoView({block:"start",behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"});
+      }
+    }));
+  }
 })();
