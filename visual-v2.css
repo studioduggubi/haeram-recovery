@@ -406,3 +406,29 @@
  .visual-version .concern-card h3{font-size:18px}
  .visual-version .concern-link{font-size:9px}
 }
+
+/* Actual office behind the portrait, with a soft paper overlay. */
+.visual-version .hero-visual{isolation:isolate}
+.hero-office-layer{position:absolute;inset:32px -24px 0 -40px;z-index:0;overflow:hidden;pointer-events:none}
+.hero-office-layer>img{width:100%;height:100%;object-fit:cover;object-position:51% 45%;opacity:.76;filter:saturate(.65) brightness(1.04) blur(1px);transform:scale(1.035)}
+.hero-office-layer:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#f3f0e8 0%,#f3f0e8d6 10%,#f3f0e826 38%,#f3f0e81f 65%,#f3f0e8 100%),linear-gradient(90deg,#f3f0e8 0%,#f3f0e81a 23%,#f3f0e826 82%,#f3f0e8 100%)}
+.visual-version .hero-portrait{top:35px;filter:drop-shadow(-8px 8px 18px #35291b14)}
+@media(max-width:1100px) and (min-width:801px){
+ .hero-office-layer{inset:44px -20px 0 -25px}
+ .visual-version .hero-portrait{top:50px}
+}
+@media(max-width:800px) and (min-width:551px){
+ .hero-office-layer{inset:0 -22px 0}
+ .visual-version .hero-portrait{top:-8px}
+}
+@media(max-width:550px){
+ .visual-version .hero-visual{max-width:none;width:calc(100% + 44px);height:100%;margin:0 0 0 -22px;overflow:hidden}
+ .hero-office-layer{inset:0}
+ .hero-office-layer>img{object-position:54% 42%;opacity:.72}
+ .hero-office-layer:after{background:linear-gradient(180deg,#f3f0e8 0%,#f3f0e8b8 10%,#f3f0e83d 38%,#f3f0e82e 70%,#f3f0e8 100%),linear-gradient(90deg,#f3f0e866 0%,#f3f0e80f 30%,#f3f0e80a 75%,#f3f0e859 100%)}
+ .visual-version .hero-portrait{top:-24px;right:12px;left:auto}
+ .visual-version .portrait-label{left:22px;right:auto}
+}
+@media(max-width:350px){
+ .visual-version .hero-portrait{top:-16px}
+}
