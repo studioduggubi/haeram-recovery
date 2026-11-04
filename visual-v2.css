@@ -432,3 +432,9 @@
 @media(max-width:350px){
  .visual-version .hero-portrait{top:-16px}
 }
+
+/* Brand clay icons for the four process steps. */
+.visual-version .journey-icon{background:none;border-radius:0;overflow:visible}
+.journey-art{display:block;width:74px;height:74px;max-width:none;object-fit:contain;flex-shrink:0}
+@media(max-width:800px){.journey-art{width:70px;height:70px}}
+@media(max-width:550px){.journey-art{width:68px;height:68px}}
