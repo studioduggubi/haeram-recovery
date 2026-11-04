@@ -115,4 +115,31 @@
       }
     }));
   }
+
+  const officeImage = document.getElementById("office-photo");
+  if (officeImage) {
+    const photoButtons = [...document.querySelectorAll(".office-thumb")];
+    let selectedPhoto = 0;
+    const selectPhoto = index => {
+      selectedPhoto = (index + photoButtons.length) % photoButtons.length;
+      const button = photoButtons[selectedPhoto];
+      officeImage.src = button.dataset.photoSrc;
+      officeImage.alt = button.dataset.photoAlt;
+      document.getElementById("office-photo-title").textContent = button.dataset.photoTitle;
+      document.getElementById("office-photo-count").textContent = String(selectedPhoto + 1).padStart(2,"0") + " / " + String(photoButtons.length).padStart(2,"0");
+      photoButtons.forEach(choice => {
+        const active = choice === button;
+        choice.classList.toggle("is-active", active);
+        choice.setAttribute("aria-pressed", String(active));
+      });
+      document.getElementById("office-photo-status").textContent = "선택한 사진: " + button.dataset.photoTitle;
+      if (window.matchMedia("(max-width:800px)").matches) {
+        const strip = button.parentElement;
+        strip.scrollTo({left:button.offsetLeft - strip.offsetLeft - 4,behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"});
+      }
+    };
+    photoButtons.forEach((button, index) => button.addEventListener("click", () => selectPhoto(index)));
+    document.getElementById("office-previous").addEventListener("click", () => selectPhoto(selectedPhoto - 1));
+    document.getElementById("office-next").addEventListener("click", () => selectPhoto(selectedPhoto + 1));
+  }
 })();

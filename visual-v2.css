@@ -306,3 +306,69 @@
   .visual-version .hero-desc{margin-top:9px}
   .visual-version .portrait-label{bottom:20px;padding:10px 14px}
 }
+
+/* Real office photography */
+.office{background:#f4f2eb}
+.office-heading>p{max-width:300px}
+.office-layout{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);gap:28px;align-items:start}
+.office-feature{margin:0;min-width:0}
+.office-photo-frame{position:relative;aspect-ratio:4/3;overflow:hidden;border-radius:14px;background:#e9e7dd}
+.office-photo-frame>img{width:100%;height:100%;object-fit:cover}
+.office-photo-count{position:absolute;left:18px;bottom:18px;background:#292b26c9;color:#fff;padding:6px 11px;border-radius:5px;font-size:10px;letter-spacing:.12em;font-variant-numeric:tabular-nums}
+.office-photo-controls{display:flex;position:absolute;right:15px;bottom:15px;gap:7px}
+.office-photo-controls button{display:grid;place-items:center;width:44px;height:44px;background:#faf9f5ed;color:var(--ink);border:1px solid #dedbd0;border-radius:50%}
+.office-photo-controls button:hover{background:#fff}
+.office-photo-controls .ui-icon{width:20px;height:20px}
+#office-previous .ui-icon{transform:rotate(180deg)}
+.office-feature figcaption{padding:22px 2px 0}
+.office-feature figcaption>span{font-size:9px;letter-spacing:.12em;color:var(--gold)}
+.office-feature h3{font-size:21px;font-weight:500;letter-spacing:-.04em;margin-top:7px}
+.office-thumbs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;min-width:0}
+.office-thumb{min-width:0;padding:7px;background:#faf9f4;border:1px solid #dcded1;border-radius:10px;text-align:left;color:#727b66;transition:border-color .15s,background .15s}
+.office-thumb:hover{border-color:#b6aa8b}
+.office-thumb.is-active{background:#e8ecdf;border-color:#8e9c78;color:#3f5035}
+.office-thumb img{width:100%;aspect-ratio:1.9;object-fit:cover;border-radius:5px}
+.office-thumb>span{display:block;font-size:10px;line-height:1.7;padding:7px 3px 2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.visit{background:#eceee5}
+.visit-grid{display:grid;grid-template-columns:1fr 1.05fr;gap:80px;align-items:center}
+.visit-photo{margin:0;position:relative;overflow:hidden;border-radius:14px;height:470px;background:#d9ddd1}
+.visit-photo img{width:100%;height:100%;object-fit:cover;object-position:50% 34%}
+.visit-photo figcaption{position:absolute;left:20px;right:20px;bottom:20px;padding:12px 16px;background:#faf9f4ed;color:#5d6554;border-radius:5px;font-size:11px}
+.visit-copy h2{font-size:35px}
+.visit-copy address{display:flex;gap:12px;align-items:flex-start;font-style:normal;font-size:15px;line-height:1.9;margin-top:28px}
+.visit-copy address .ui-icon{width:23px;height:23px;color:var(--gold);margin-top:4px}
+.visit-note{font-size:12px;color:#78816d;margin-top:17px}
+.visit-links{display:flex;flex-wrap:wrap;gap:23px;align-items:center;margin-top:28px}
+.visit-links .button{font-size:12px;min-height:52px;padding:13px 18px;gap:24px}
+.visit-links .ui-icon{width:19px;height:19px}
+.visit-links .text-link{font-size:11px;gap:12px}
+@media(max-width:1100px){
+ .office-layout{grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:22px}
+ .office-thumbs{gap:10px}.office-thumb{padding:6px}.office-thumb>span{font-size:9px}
+ .visit-grid{gap:45px}.visit-photo{height:440px}.visit-copy h2{font-size:31px}
+}
+@media(max-width:800px){
+ .office-layout{grid-template-columns:1fr;gap:22px}
+ .office-thumbs{display:grid;grid-auto-flow:column;grid-auto-columns:120px;grid-template-columns:none;overflow-x:auto;overscroll-behavior-inline:contain;scroll-snap-type:x proximity;padding:4px 4px 10px;margin:-4px;scrollbar-width:thin}
+ .office-thumb{scroll-snap-align:start;padding:6px}
+ .office-thumb img{aspect-ratio:1.55}
+ .office-thumb>span{font-size:9px}
+ .office-feature h3{font-size:20px}.office-feature figcaption{padding-top:18px}
+ .office-heading>p{margin-top:17px}
+ .visit-grid{gap:30px}.visit-photo{height:370px}.visit-copy h2{font-size:28px}
+ .visit-copy address{font-size:12px;margin-top:22px}.visit-note{font-size:11px}.visit-links{gap:18px;margin-top:22px}
+}
+@media(max-width:550px){
+ .office-heading h2{font-size:29px}.office-heading>p{font-size:11px}
+ .office-photo-frame{border-radius:11px}
+ .office-photo-controls{right:12px;bottom:12px;gap:6px}
+ .office-photo-count{left:12px;bottom:12px;font-size:9px}
+ .office-feature h3{font-size:18px}
+ .office-thumbs{grid-auto-columns:112px}
+ .visit-grid{grid-template-columns:1fr;gap:30px}
+ .visit-photo{height:auto;aspect-ratio:4/3;border-radius:11px}
+ .visit-photo figcaption{left:14px;right:14px;bottom:14px;padding:10px 13px;font-size:10px}
+ .visit-copy h2{font-size:29px}
+ .visit-copy address{font-size:14px}
+ .visit-links .button{font-size:11px}.visit-links .text-link{font-size:10px;gap:8px}
+}
