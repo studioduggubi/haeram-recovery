@@ -7,13 +7,20 @@
  let fixedWidth=0,interacted=false;
  const copy=hero.querySelector('.hero-copy');
  function freeze(){
-  if(!mobile.matches){hero.style.removeProperty('--hero-fixed-height');hero.style.removeProperty('--hero-copy-fixed');fixedWidth=0;return;}
+  if(!mobile.matches){hero.style.removeProperty('--hero-fixed-height');hero.style.removeProperty('--hero-copy-fixed');hero.style.removeProperty('--hero-label-bottom');fixedWidth=0;return;}
   const viewport=Math.min(window.innerHeight,window.visualViewport?.height||window.innerHeight);
   const header=document.querySelector('.site-header').getBoundingClientRect().height;
   const dock=document.querySelector('.mobile-contact-bar').getBoundingClientRect().height;
-  hero.style.setProperty('--hero-fixed-height',Math.max(240,Math.round(viewport-header-dock))+'px');
+  const requested=Math.round(Math.max(240,viewport-header-dock)*1.15);
+  hero.style.setProperty('--hero-fixed-height',requested+'px');
   hero.style.removeProperty('--hero-copy-fixed');
-  hero.style.setProperty('--hero-copy-fixed',Math.ceil(copy.getBoundingClientRect().height)+'px');
+  const copyHeight=Math.ceil(copy.getBoundingClientRect().height);
+  const portraitWidth=hero.querySelector('.hero-portrait').getBoundingClientRect().width;
+  // Preserve a head-to-waist composition even when an in-app browser starts with a very short viewport.
+  const fitted=Math.max(copyHeight+Math.round(portraitWidth*1.32),Math.min(requested,copyHeight+Math.round(portraitWidth*1.62)));
+  hero.style.setProperty('--hero-fixed-height',fitted+'px');
+  hero.style.setProperty('--hero-label-bottom',Math.max(20,Math.round(fitted-(viewport-header-dock)+20))+'px');
+  hero.style.setProperty('--hero-copy-fixed',copyHeight+'px');
   fixedWidth=window.innerWidth;
  }
  freeze();

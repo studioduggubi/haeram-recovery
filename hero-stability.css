@@ -2,13 +2,13 @@ html,html.reading-expanded,html.disclosure-active{scroll-snap-type:none!importan
 .screen{scroll-snap-align:none!important;scroll-snap-stop:normal!important}
 /* Keep the mobile hero visually fixed while browser chrome opens/closes. */
 @media(max-width:800px){
- .visual-version .hero.screen{height:var(--hero-fixed-height,calc(100svh - 128px));min-height:0;max-height:var(--hero-fixed-height,none);overflow:hidden;scroll-snap-stop:normal;transition:none}
+ .visual-version .hero.screen{height:var(--hero-fixed-height,calc((100svh - 128px)*1.15));min-height:0;max-height:var(--hero-fixed-height,none);overflow:hidden;scroll-snap-stop:normal;transition:none}
  .visual-version .hero-grid{height:100%;min-height:0;grid-template-rows:var(--hero-copy-fixed,auto) minmax(0,1fr)}
  .visual-version .hero-copy{padding:22px 0 0}.visual-version .hero-copy .eyebrow{font-size:10px;line-height:1.6;margin-bottom:13px}
  .visual-version .hero h1{font-size:clamp(27px,7.7vw,38px);line-height:1.42}.visual-version .hero-desc{font-size:12px;line-height:1.8;margin-top:12px}
  .visual-version .hero-visual{height:100%;min-height:0;overflow:hidden;contain:layout paint}
- .visual-version .hero-portrait{transform:none!important;transition:none!important;animation:none!important;will-change:auto}
+ .visual-version .hero-portrait{width:clamp(213.75px,72.2vw,304px);height:auto;top:-8px;transform:none!important;transition:none!important;animation:none!important;will-change:auto}
  .hero-office-layer>img{transform:scale(1.035)!important;transition:none!important;animation:none!important;will-change:auto}
- .visual-version .hero .portrait-label{bottom:20px}
+ .visual-version .hero .portrait-label{bottom:var(--hero-label-bottom,20px)}
 }
 @media(max-width:350px){.visual-version .hero-copy{padding-top:16px}.visual-version .hero h1{font-size:26px}.visual-version .hero-desc{font-size:11px;margin-top:8px}}
