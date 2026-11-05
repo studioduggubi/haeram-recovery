@@ -79,3 +79,37 @@
  .intake-widget{padding:16px}.intake-widget .intake-alternatives{display:none}.intake-widget .choices{gap:7px}.intake-widget .choice{min-height:40px;padding:8px 10px}.intake-widget .reassure{padding:8px 10px;margin-top:10px}
  .intake-widget h3{font-size:18px}.intake-widget .desc{font-size:11px;margin-bottom:12px}
 }
+
+/* A single layout owns all three contact-card slots; legacy phone margins must not split the group. */
+.visual-version .contact-actions{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+.visual-version .contact-actions>a{display:grid;grid-template-columns:32px minmax(0,1fr) 24px;gap:16px;margin:0;min-height:86px;padding:17px 22px;border:1px solid #a2aa8f;border-radius:10px}
+.visual-version .contact-actions>.contact-booking{border-color:#2f6545}
+.visual-version .contact-actions .contact-icon,.visual-version .contact-actions .naver-symbol{width:32px;height:32px;justify-self:center}
+.visual-version .contact-actions>a>span:last-child{width:24px;text-align:right;font-size:26px;line-height:1}
+.intake-widget .intake-calculator{margin:16px 0 0!important;border:1px solid #d1dac4;border-radius:10px;background:#f4f6ec;padding:0 13px}
+.intake-widget .intake-calculator>summary{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:13px 0;list-style:none;font-size:13px;font-weight:600;color:#3a5531}
+.intake-calculator>summary:after{content:'+';font-size:20px;font-weight:400}.intake-calculator[open]>summary:after{content:'−'}
+.intake-calculator>summary small{font-weight:400;color:#768469;margin-left:auto}
+.calc-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:13px 0}
+.calc-field{display:block;font-size:12px;font-weight:600}.calc-field>span{display:block;margin-bottom:5px}.calc-field-wide{grid-column:1/-1}
+.calc-money{display:flex;align-items:center;border:1px solid #cbd7ba;border-radius:8px;background:#fffef9;overflow:hidden}
+.intake-widget .calc-money input{width:100%;min-width:0;min-height:44px;font-size:16px;line-height:1.5;border:0;background:none;padding:10px;border-radius:0;color:#293425;letter-spacing:0}
+.calc-money>span{padding:0 10px 0 0;color:#71815f;font-size:11px;font-weight:400;white-space:nowrap}
+.intake-widget .calc-field select{margin:0;min-height:44px;font-size:13px;padding:9px 10px}
+.intake-widget .calculate-button{width:100%;min-height:44px;border:1px solid #6e835c;border-radius:8px;background:#e5edd9;color:#314a28;font:600 13px/1.5 var(--sans);padding:10px;cursor:pointer}
+.calc-note{font-size:11px;line-height:1.7;color:#718061;margin:8px 0 0}.calc-result:empty{display:none}
+.calc-result{margin:13px 0;padding:15px;border-radius:9px;background:#fffef9;border:1px solid #d9e0ce}
+.intake-widget .calc-result-label{font-size:11px;color:#6f7d60;line-height:1.6;margin:0 0 5px}
+.calc-amount{display:block;font-size:27px;line-height:1.4;font-weight:700;color:#344d2a;letter-spacing:-.05em}
+.calc-breakdown{display:flex;justify-content:space-between;gap:8px;font-size:11px;line-height:1.65;color:#647652;margin-top:10px}
+.calc-bar{display:flex;height:8px;overflow:hidden;border-radius:8px;background:#dce4ce;margin-top:8px}.calc-bar>span:first-child{background:#bac9a2}.calc-bar>span:last-child{background:#587347}
+.intake-widget .calc-encouragement{font-size:12px;line-height:1.8;color:#536846;margin:12px 0 0}.intake-widget .calc-range-note{font-size:11px;line-height:1.8;color:#718164;margin:8px 0 0}
+.intake-widget .calc-basis{margin:10px 0 12px!important}.intake-widget .calc-basis summary{padding:5px 0;font-size:11px}.intake-widget .calc-basis p{font-size:11px;line-height:1.8;margin-top:6px}.calc-basis a{text-decoration:underline;text-underline-offset:3px}
+.calc-clear{display:block;border:0;background:none;font-size:11px;padding:7px 0 11px;color:#788467;cursor:pointer}.calc-clear[hidden]{display:none}
+.intake-widget .intake-review .calc-review-text{white-space:pre-line;font-size:11px;border-top:1px solid #d9e0cd;padding-top:8px;margin-top:7px}
+@media(max-width:800px){
+ .visual-version .contact-actions{gap:10px}.visual-version .contact-actions>a{grid-template-columns:28px minmax(0,1fr) 22px;gap:12px;min-height:74px;padding:12px 16px}
+ .visual-version .contact-actions .contact-icon,.visual-version .contact-actions .naver-symbol{width:28px;height:28px}
+ .intake-widget .intake-calculator{padding:0 11px;margin-top:12px!important}.intake-widget .intake-calculator>summary{font-size:12px;padding:11px 0}.calc-fields{gap:9px}.calc-field{font-size:11px}.calc-amount{font-size:24px}.intake-widget .calc-encouragement{font-size:11px}
+}
+@media(max-width:350px){.visual-version .contact-actions>a{min-height:68px;padding:11px 13px;gap:10px}.calc-fields{grid-template-columns:1fr}.calc-field-wide{grid-column:auto}.calc-breakdown{flex-wrap:wrap}.calc-amount{font-size:22px}}

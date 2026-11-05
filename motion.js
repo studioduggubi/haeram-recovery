@@ -3,6 +3,7 @@
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
   const hero = document.querySelector('.hero');
   const heroVisual = document.querySelector('.hero-visual');
+  const mobileHero = matchMedia('(max-width:800px)');
   const photographs = [...document.querySelectorAll('.about-portrait>img, .office-photo-frame>img, .visit-photo>img, .solution-art>img')];
   photographs.forEach(image => image.classList.add('depth-photo'));
   let frame = 0;
@@ -10,7 +11,7 @@
     frame = 0;
     if (reduced.matches) return;
     const height = window.innerHeight;
-    if (hero && heroVisual) {
+    if (hero && heroVisual && !mobileHero.matches) {
       const rect = hero.getBoundingClientRect();
       if (rect.bottom > 0 && rect.top < height) {
         const progress = Math.max(0, Math.min(300, 64 - rect.top));
@@ -55,6 +56,9 @@
     });
   });
   const resumeSnap = () => {
+    const intake=document.getElementById('start');
+    if(intake?.querySelector('.intake-calculator[open]')){const rect=intake.getBoundingClientRect();if(rect.top<innerHeight-64&&rect.bottom>64)return;}
+
     if (!document.querySelector(disclosureSelector.split(',').map(s => s + '[open]').join(','))) root.classList.remove('disclosure-active');
   };
   window.addEventListener('wheel', resumeSnap, {passive:true});
