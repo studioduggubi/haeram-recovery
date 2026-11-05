@@ -283,3 +283,4 @@ html,body,main,.faq,.faq-list{overflow-anchor:none}
 }
 @media(max-width:350px) and (max-height:600px){.visual-version main>#process.section{padding:14px 0}}
 @media(max-width:800px){.visual-version .rehabilitation .solution-art img{object-position:100% 50%}.visual-version .bankruptcy .solution-art img{object-position:32% 50%}.visual-version .art-label{top:auto;bottom:8px;left:6px;font-size:9px;padding:4px 6px}}
+@media(max-width:350px) and (max-height:600px){.visual-version main>#process.section{padding:12px 0}.visual-version #process .section-heading{margin-bottom:12px}.visual-version #process h2{font-size:21px;line-height:1.3}}
