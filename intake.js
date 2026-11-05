@@ -9,7 +9,8 @@
  let submitting=false;
  const data={concern:'',income:'',debt:'',name:'',phone:'',time:''};
  const repayment=window.HaeramRepayment;
- const calculator={income:'',debt:'',people:'',result:null};
+ const money=window.HaeramMoney;
+ const calculator={income:'',debt:'',people:'',result:null,money:{income:null,debt:null}};
  const kstYear=()=>Number(new Intl.DateTimeFormat('en',{year:'numeric',timeZone:'Asia/Seoul'}).format(new Date()));
  const amount=won=>won<10000?'1만원 미만':Math.round(won/10000).toLocaleString('ko-KR')+'만원';
  const concerns=['매달 갚을 돈이 부담돼요','독촉·압류가 걱정돼요','법원 문서·기한이 있어요','회생·파산부터 알아보고 싶어요'];
@@ -30,8 +31,12 @@
   if(shown.detail)body+='<p class="calc-note">'+esc(shown.detail)+'</p>';
   return body+'<p class="calc-encouragement">'+esc(shown.encouragement)+'</p><p class="calc-range-note">'+esc(shown.rangeNote)+'</p>';
  }
+ function moneyField(key,title,placeholder){
+  const info=calculator.money[key];
+  return '<div class="calc-field"><label for="calc-'+key+'">'+title+'</label><div class="calc-money"><input id="calc-'+key+'" type="text" inputmode="decimal" maxlength="32" placeholder="'+placeholder+'" value="'+esc(calculator[key])+'" autocomplete="off" aria-describedby="calc-'+key+'-interpretation"><span aria-hidden="true">만원</span></div><p class="calc-interpretation" id="calc-'+key+'-interpretation" aria-live="polite">'+esc(info?.notice||'')+'</p><button class="calc-unit-override" type="button" data-money-override="'+key+'" '+(info?.alternativeWon===null||!info?'hidden':'')+'>입력한 숫자를 만원 단위로 사용</button></div>';
+ }
  function calculatorMarkup(){
-  return '<details class="intake-calculator" '+(calculator.income||calculator.debt||calculator.people?'open':'')+'><summary><span>월 변제금, 미리 가늠해보기</span><small>선택</small></summary><p class="calc-note">매달 얼마를 준비하면 될지, 먼저 가볍게 살펴보세요. 연락처 없이 계산할 수 있어요.</p><div class="calc-fields"><label class="calc-field"><span>월평균 세후 소득</span><span class="calc-money"><input id="calc-income" type="text" inputmode="decimal" maxlength="12" placeholder="예: 300" value="'+esc(calculator.income)+'" autocomplete="off"><span>만원</span></span></label><label class="calc-field"><span>담보 없는 남은 빚</span><span class="calc-money"><input id="calc-debt" type="text" inputmode="decimal" maxlength="14" placeholder="예: 6,000" value="'+esc(calculator.debt)+'" autocomplete="off"><span>만원</span></span></label><label class="calc-field calc-field-wide"><span>생계비 적용 인원 · 본인 포함</span><select id="calc-people"><option value="">선택해주세요</option>'+[1,2,3,4,5,6].map(n=>'<option value="'+n+'">'+(n===1?'1명 · 본인만':n+'명')+'</option>').join('')+'</select></label></div><p class="calc-note">카드·신용대출 등을 적어주세요. 집·차 담보대출은 제외해요. 부양가족 인정 인원은 상담에서 함께 확인해요.</p><button type="button" class="calculate-button" id="calculate-repayment">참고 월 변제금 보기 →</button><p id="calc-error" class="error" role="alert"></p><div class="calc-result" id="calc-result" aria-live="polite">'+calculatorResult()+'</div><details class="calc-basis"><summary>계산 기준 살펴보기</summary><p>2026년 <a href="https://www.mohw.go.kr/menu.es?mid=a10708010500" target="_blank" rel="noopener noreferrer">기준 중위소득</a>의 60%를 기본생계비로 빼고, 변제기간은 36개월로 가정해요. <a href="https://slb.scourt.go.kr/dcboard/new/DcNewsViewAction.work?cbub_code=000221&amp;gubun=41&amp;pageIndex=2&amp;seqnum=19158" target="_blank" rel="noopener noreferrer">법원 생계비 안내 ↗</a></p><p>재산·우선채무·추가 생계비·이자와 법원의 부양가족 인정은 반영 전이에요. 개인회생 참고 계산이며, 최종 변제금과 기간은 법원 심사로 정해집니다. 개인파산의 납부액이나 신청 가능 여부를 판단하는 계산은 아니에요.</p></details><button type="button" class="calc-clear" id="clear-calculator" '+(!calculator.income&&!calculator.debt&&!calculator.people?'hidden':'')+'>계산 내용 지우기</button></details>';
+  return '<details class="intake-calculator" '+(calculator.income||calculator.debt||calculator.people?'open':'')+'><summary><span>월 변제금, 미리 가늠해보기</span><small>선택</small></summary><p class="calc-note">매달 얼마를 준비하면 될지, 먼저 가볍게 살펴보세요. 연락처 없이 계산할 수 있어요.</p><div class="calc-fields">'+moneyField('income','월평균 세후 소득','예: 300')+moneyField('debt','담보 없는 남은 빚','예: 6,000')+'<label class="calc-field calc-field-wide"><span>생계비 적용 인원 · 본인 포함</span><select id="calc-people"><option value="">선택해주세요</option>'+[1,2,3,4,5,6].map(n=>'<option value="'+n+'">'+(n===1?'1명 · 본인만':n+'명')+'</option>').join('')+'</select></label></div><p class="calc-note">카드·신용대출 등을 적어주세요. 집·차 담보대출은 제외해요. 부양가족 인정 인원은 상담에서 함께 확인해요.</p><button type="button" class="calculate-button" id="calculate-repayment">참고 월 변제금 보기 →</button><p id="calc-error" class="error" role="alert"></p><div class="calc-result" id="calc-result" aria-live="polite">'+calculatorResult()+'</div><details class="calc-basis"><summary>계산 기준 살펴보기</summary><p>2026년 <a href="https://www.mohw.go.kr/menu.es?mid=a10708010500" target="_blank" rel="noopener noreferrer">기준 중위소득</a>의 60%를 기본생계비로 빼고, 변제기간은 36개월로 가정해요. <a href="https://slb.scourt.go.kr/dcboard/new/DcNewsViewAction.work?cbub_code=000221&amp;gubun=41&amp;pageIndex=2&amp;seqnum=19158" target="_blank" rel="noopener noreferrer">법원 생계비 안내 ↗</a></p><p>재산·우선채무·추가 생계비·이자와 법원의 부양가족 인정은 반영 전이에요. 개인회생 참고 계산이며, 최종 변제금과 기간은 법원 심사로 정해집니다. 개인파산의 납부액이나 신청 가능 여부를 판단하는 계산은 아니에요.</p></details><button type="button" class="calc-clear" id="clear-calculator" '+(!calculator.income&&!calculator.debt&&!calculator.people?'hidden':'')+'>계산 내용 지우기</button></details>';
  }
  function syncChoiceButtons(){
   root.querySelectorAll('[data-field]').forEach(button=>{const key=button.dataset.field;const value=(key==='income'?incomes:debts)[Number(button.dataset.index)];button.setAttribute('aria-pressed',String(value===data[key]));});
@@ -40,14 +45,51 @@
  function bindCalculator(){
   document.getElementById('calc-people').value=calculator.people;
   const clearResult=()=>{calculator.result=null;document.getElementById('calc-result').innerHTML='';document.getElementById('calc-error').textContent='';document.getElementById('clear-calculator').hidden=false;};
-  ['income','debt','people'].forEach(key=>document.getElementById('calc-'+key).addEventListener(key==='people'?'change':'input',e=>{calculator[key]=e.target.value;clearResult();}));
-  document.getElementById('clear-calculator').addEventListener('click',()=>{Object.assign(calculator,{income:'',debt:'',people:'',result:null});['income','debt','people'].forEach(key=>document.getElementById('calc-'+key).value='');clearResult();document.getElementById('clear-calculator').hidden=true;});
+  function paintMoney(key){
+   const info=calculator.money[key];
+   document.getElementById('calc-'+key+'-interpretation').textContent=info?.notice||'';
+   root.querySelector('[data-money-override="'+key+'"]').hidden=info?.alternativeWon===null||!info;
+  }
+  function normalise(key){
+   const cached=calculator.money[key];
+   if(cached&&cached.canonical===calculator[key])return cached.won;
+   const parsed=money.parse(calculator[key],key);
+   if(!parsed)return null;
+   calculator[key]=parsed.canonical;calculator.money[key]=parsed;
+   document.getElementById('calc-'+key).value=parsed.canonical;paintMoney(key);
+   return parsed.won;
+  }
+  ['income','debt','people'].forEach(key=>{
+   const input=document.getElementById('calc-'+key);
+   input.addEventListener(key==='people'?'change':'input',e=>{
+    calculator[key]=e.target.value;
+    if(key!=='people'){calculator.money[key]=null;paintMoney(key);}
+    input.removeAttribute('aria-invalid');clearResult();
+   });
+   if(key!=='people')input.addEventListener('blur',()=>normalise(key));
+  });
+  root.querySelectorAll('[data-money-override]').forEach(button=>button.addEventListener('click',()=>{
+   const key=button.dataset.moneyOverride,info=calculator.money[key];
+   if(!info||info.alternativeWon===null)return;
+   clearResult();
+   const won=info.alternativeWon,canonical=money.inputValue(won);
+   calculator[key]=canonical;
+   calculator.money[key]={won,canonical,notice:money.label(won)+'으로 입력했어요.',alternativeWon:null};
+   document.getElementById('calc-'+key).value=canonical;paintMoney(key);
+  }));
+  document.getElementById('clear-calculator').addEventListener('click',()=>{
+   Object.assign(calculator,{income:'',debt:'',people:'',result:null,money:{income:null,debt:null}});
+   ['income','debt','people'].forEach(key=>{const input=document.getElementById('calc-'+key);input.value='';input.removeAttribute('aria-invalid');});
+   ['income','debt'].forEach(paintMoney);clearResult();document.getElementById('clear-calculator').hidden=true;
+  });
   document.getElementById('calculate-repayment').addEventListener('click',()=>{
-   const net=repayment.parseManwon(calculator.income),debt=repayment.parseManwon(calculator.debt),people=Number(calculator.people);
+   const net=normalise('income'),debt=normalise('debt'),people=Number(calculator.people);
    const error=document.getElementById('calc-error');
-   if(net===null||debt===null||debt<=0||!people){error.textContent='월소득·남은 빚·적용 인원을 확인해주세요. 금액은 만원 단위로 적으면 돼요.';return;}
+   [['income',net===null],['debt',debt===null||debt<=0],['people',!people]].forEach(([key,invalid])=>document.getElementById('calc-'+key).setAttribute('aria-invalid',String(invalid)));
+   if(net===null||debt===null||debt<=0){error.textContent='금액을 확인해주세요. 300, 300만원, 3,000,000원처럼 적어도 괜찮아요.';return;}
+   if(!people){error.textContent='생계비 적용 인원을 선택해주세요. 본인을 포함하면 돼요.';return;}
    const result=repayment.calculate({monthlyNet:net,debt,people},kstYear());
-   if(result.status==='invalid'){error.textContent='입력한 금액과 인원을 한 번 확인해주세요.';return;}
+   if(result.status==='invalid'){error.textContent='소득과 빚의 금액을 한 번 확인해주세요. 간이 계산 범위를 넘는 금액은 상담에서 함께 살펴볼게요.';return;}
    calculator.result=result;error.textContent='';document.getElementById('calc-result').innerHTML=calculatorResult();
    if(net===0)data.income=incomes[2];else if(!data.income||data.income===incomes[2])data.income=incomes[0];
    data.debt=debt<30000000?debts[0]:debt<100000000?debts[1]:debts[2];syncChoiceButtons();
@@ -89,7 +131,7 @@
    root.querySelector('[data-back]').addEventListener('click',()=>{save();step=2;render(true);});
   }else{
    root.innerHTML='<div class="finish-symbol" aria-hidden="true">✓</div>'+heading('상담 요청을<br>잘 받았습니다.','남겨주신 전화번호로 해람법무사에서 연락드릴게요.')+'<div class="summary"><strong>'+esc(data.name||'고객')+'님의 상담 요청</strong><p>연락처: '+esc(data.phone.slice(0,3)+'-****-'+data.phone.slice(-4))+'</p><p>'+esc(data.concern)+'</p><p>'+esc(data.income)+' · '+esc(data.debt)+'</p><p>'+esc(data.time||'연락 시간 미선택')+'</p></div><p class="desc">급하게 확인할 기한이 있다면 전화로 먼저 알려주세요.</p><a class="intake-phone-link" href="tel:050714146860">0507-1414-6860 바로 전화 ↗</a><button type="button" class="primary" id="restart">다른 상담 요청 작성하기</button>';
-   document.getElementById('restart').addEventListener('click',()=>{Object.keys(data).forEach(k=>data[k]='');Object.assign(calculator,{income:'',debt:'',people:'',result:null});requestId=crypto.randomUUID();startedAt=Date.now();step=1;render(true);});
+   document.getElementById('restart').addEventListener('click',()=>{Object.keys(data).forEach(k=>data[k]='');Object.assign(calculator,{income:'',debt:'',people:'',result:null,money:{income:null,debt:null}});requestId=crypto.randomUUID();startedAt=Date.now();step=1;render(true);});
   }
   if(step===2)root.querySelector('[data-back]').addEventListener('click',()=>{step=1;render(true);});
   if(step>=3){
