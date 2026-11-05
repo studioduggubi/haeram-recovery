@@ -5,7 +5,7 @@
  if (!root) return;
  const config=JSON.parse(document.getElementById('intake-config').textContent);
  let startedAt=Date.now();
- let requestId=crypto.randomUUID();
+ let requestId=null;
  let submitting=false;
  const data={concern:'',income:'',debt:'',name:'',phone:'',time:''};
  const repayment=window.HaeramRepayment;
@@ -118,6 +118,7 @@
  if(!config.endpoint){error.textContent='전화 상담 요청은 연결 준비 중이에요. 지금은 네이버 예약이나 전화 상담을 이용해주세요.';return;}
  submitting=true;const submit=e.currentTarget.querySelector('[type=submit]');submit.disabled=true;submit.textContent='요청을 보내고 있어요…';error.textContent='';
  try{
+  if(!requestId)requestId=window.HaeramRequestId();
   const payload=new URLSearchParams({request_id:requestId,concern:data.concern,income:data.income,debt_range:data.debt,name:data.name,phone:data.phone,preferred_time:data.time,consent:'true',consent_version:config.consentVersion,website:document.querySelector('[name=website]').value,started_at:String(startedAt)});
   if(calculator.result){payload.set('calc_monthly_net',String(calculator.result.monthlyNet));payload.set('calc_debt',String(calculator.result.debt));payload.set('calc_people',String(calculator.result.people));payload.set('calc_basis',repayment.VERSION);}
   const controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),20000);
@@ -131,7 +132,7 @@
    root.querySelector('[data-back]').addEventListener('click',()=>{save();step=2;render(true);});
   }else{
    root.innerHTML='<div class="finish-symbol" aria-hidden="true">✓</div>'+heading('상담 요청을<br>잘 받았습니다.','남겨주신 전화번호로 해람법무사에서 연락드릴게요.')+'<div class="summary"><strong>'+esc(data.name||'고객')+'님의 상담 요청</strong><p>연락처: '+esc(data.phone.slice(0,3)+'-****-'+data.phone.slice(-4))+'</p><p>'+esc(data.concern)+'</p><p>'+esc(data.income)+' · '+esc(data.debt)+'</p><p>'+esc(data.time||'연락 시간 미선택')+'</p></div><p class="desc">급하게 확인할 기한이 있다면 전화로 먼저 알려주세요.</p><a class="intake-phone-link" href="tel:050714146860">0507-1414-6860 바로 전화 ↗</a><button type="button" class="primary" id="restart">다른 상담 요청 작성하기</button>';
-   document.getElementById('restart').addEventListener('click',()=>{Object.keys(data).forEach(k=>data[k]='');Object.assign(calculator,{income:'',debt:'',people:'',result:null,money:{income:null,debt:null}});requestId=crypto.randomUUID();startedAt=Date.now();step=1;render(true);});
+   document.getElementById('restart').addEventListener('click',()=>{Object.keys(data).forEach(k=>data[k]='');Object.assign(calculator,{income:'',debt:'',people:'',result:null,money:{income:null,debt:null}});requestId=null;startedAt=Date.now();step=1;render(true);});
   }
   if(step===2)root.querySelector('[data-back]').addEventListener('click',()=>{step=1;render(true);});
   if(step>=3){
