@@ -63,7 +63,7 @@
       : answers[1] === 1
       ? "수입이 일정하지 않다면 최근의 입금 내역과 대략적인 수입·지출을 떠올려보세요. 상담에서 계속적인 소득을 어떻게 확인할지 함께 살펴볼 수 있습니다."
       : "대략적인 월소득·생활비·채무와 보유 재산을 떠올려보세요. 정확하지 않은 부분은 상담에서 확인할 수 있습니다.";
-    container.innerHTML = '<div class="question-result"><h3 tabindex="-1">상담 메모가 정리됐어요.</h3><p>내 이야기를 꺼내는 데 필요한 작은 준비입니다.</p><div class="memo">' + escapeHtml(createMemo()) + '</div><div class="result-tips">' + note + '</div><div class="result-actions"><button class="button button-light" id="copy-memo" type="button">메모 복사하기</button><a class="button button-dark" href="#contact">상담 방법 보기 ↗</a></div><button class="result-reset" type="button">← 답변 다시 살펴보기</button><p class="result-selected-note">이 메모는 신청 가능 여부나 법원 결과를 판단한 내용이 아닙니다.</p><div id="copy-fallback-slot"></div></div>';
+    container.innerHTML = '<div class="question-result"><h3 tabindex="-1">상담 메모가 정리됐어요.</h3><p>내 이야기를 꺼내는 데 필요한 작은 준비입니다.</p><details class="memo-details"><summary>내 답변 4개 보기 <span aria-hidden="true">+</span></summary><div class="memo">' + escapeHtml(createMemo()) + '</div></details><div class="result-tips">' + note + '</div><div class="result-actions"><button class="button button-light" id="copy-memo" type="button">메모 복사하기</button><a class="button button-dark" href="#contact">상담 방법 보기 ↗</a></div><button class="result-reset" type="button">← 답변 다시 살펴보기</button><p class="result-selected-note">이 메모는 신청 가능 여부나 법원 결과를 판단한 내용이 아닙니다.</p><div id="copy-fallback-slot"></div></div>';
     document.getElementById("copy-memo").addEventListener("click", async () => {
       try {
         if (!navigator.clipboard) throw new Error("clipboard unavailable");
@@ -111,7 +111,7 @@
       });
       document.getElementById("youtube-status").textContent = "선택한 영상: " + title;
       if (window.matchMedia("(max-width:900px)").matches) {
-        videoPlayer.closest(".youtube-feature").scrollIntoView({block:"start",behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"});
+        videoPlayer.closest(".youtube-feature-screen").scrollIntoView({block:"start",behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"});
       }
     }));
   }
