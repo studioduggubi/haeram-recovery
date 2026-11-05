@@ -125,3 +125,34 @@
 .intake-widget .calc-unit-override{display:block;border:0;border-bottom:1px solid #a4b293;border-radius:0;background:none;padding:1px 0;margin-top:4px;font:400 10px/1.6 var(--sans);color:#718061;cursor:pointer;text-align:left}
 .intake-widget .calc-unit-override[hidden]{display:none}
 @media(max-width:800px){.intake-widget .calc-field>label{font-size:11px}.intake-widget .calc-money{gap:6px;padding:0 10px}.intake-widget p.calc-interpretation{font-size:10px}}
+
+/* Make a recorded request unmistakable, with the receipt before secondary actions. */
+.consultation-intake[data-intake-step="4"] .intake-progress{display:none}
+.consultation-intake[data-intake-step="4"] .intake-top{margin-bottom:18px}
+.consultation-intake[data-intake-step="4"] #intake-step{color:#2f6545;font-weight:700}
+.intake-widget .finish-confirmation{padding:26px 18px 24px;margin:0 0 16px;border-radius:12px;background:#2f6545;color:#fff;text-align:center}
+.intake-widget .finish-confirmation .finish-symbol{width:60px;height:60px;margin:0 auto 12px;background:#fff;color:#2f6545;box-shadow:0 0 0 7px rgba(255,255,255,.12)}
+.finish-symbol svg{display:block;width:36px;height:36px}
+.intake-widget .finish-label{margin:0 0 8px;font-size:13px;line-height:1.5;font-weight:700;letter-spacing:.08em;color:#e7f0df}
+.intake-widget .finish-confirmation h3{font-size:30px;line-height:1.4;font-weight:700;letter-spacing:-.045em;color:#fff;margin:0 0 12px;word-break:keep-all;outline-offset:5px}
+.intake-widget .finish-message{font-size:13px;line-height:1.8;color:#edf3e9;margin:0}
+.intake-widget .finish-contact{border:1px solid #cfdac8;border-radius:10px;padding:14px 12px;margin:0 0 16px;text-align:center;background:#fffef9}
+.finish-contact>span{display:block;font-size:11px;line-height:1.6;color:#64745c}
+.finish-contact>strong{display:block;font-size:22px;line-height:1.5;font-weight:700;letter-spacing:.02em;color:#2b4934}
+.intake-widget .finish-contact>p{font-size:12px;line-height:1.7;color:#586b4e;margin:4px 0 0;word-break:keep-all}
+ .intake-widget .finish-acknowledge{margin-bottom:16px;background:#2f6545;font-size:15px;min-height:50px}
+.intake-widget .finish-restart{display:block;width:100%;border:0;background:none;padding:12px 0 0;color:#6b775e;font:400 12px/1.6 var(--sans);text-decoration:underline;text-underline-offset:4px;cursor:pointer}
+@media(max-width:800px){
+ .consultation-intake[data-intake-step="4"] .intake-top{font-size:11px;margin-bottom:14px}
+ .intake-widget .finish-confirmation{padding:24px 14px 22px;margin-bottom:14px}
+ .intake-widget .finish-confirmation .finish-symbol{width:56px;height:56px;margin-bottom:12px}
+ .intake-widget .finish-confirmation h3{font-size:25px}
+ .intake-widget .finish-message{font-size:12px}
+ .intake-widget .finish-contact{padding:12px 10px;margin-bottom:14px}
+ .finish-contact>strong{font-size:21px}
+}
+@media(max-width:350px){
+ .intake-widget .finish-confirmation{padding:22px 10px 20px}
+ .intake-widget .finish-confirmation h3{font-size:22px}
+ .intake-widget .finish-message{font-size:11px}
+}

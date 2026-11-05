@@ -98,7 +98,7 @@
  function render(focus=false){
   if(focus)document.documentElement.classList.add('disclosure-active');
   document.getElementById('start').dataset.intakeStep=String(step);
-  document.getElementById('intake-step').textContent=step<=3?step+' / 3':'요청 완료';document.getElementById('intake-progress').style.width=Math.min(step,3)/3*100+'%';
+  document.getElementById('intake-step').textContent=step<=3?step+' / 3':'✓ 접수 완료';document.getElementById('intake-progress').style.width=Math.min(step,3)/3*100+'%';
   if(step===1){
    root.innerHTML=heading('무엇이 가장 걱정되세요?','가장 먼저 이야기하고 싶은 한 가지만 골라주세요.')+'<div class="choices">'+concerns.map((v,i)=>'<button class="choice" type="button" data-concern="'+i+'" aria-pressed="'+(data.concern===v)+'">'+v+'</button>').join('')+'</div><p class="reassure"><span aria-hidden="true">✓</span>연락처는 마지막에 남겨요. 상담 요청을 누르기 전에는 사무실로 전달하지 않아요.</p>';
    root.querySelectorAll('[data-concern]').forEach(e=>e.addEventListener('click',()=>{data.concern=concerns[Number(e.dataset.concern)];step=2;render(true);}));
@@ -131,7 +131,8 @@
 });
    root.querySelector('[data-back]').addEventListener('click',()=>{save();step=2;render(true);});
   }else{
-   root.innerHTML='<div class="finish-symbol" aria-hidden="true">✓</div>'+heading('상담 요청을<br>잘 받았습니다.','남겨주신 전화번호로 해람법무사에서 연락드릴게요.')+'<div class="summary"><strong>'+esc(data.name||'고객')+'님의 상담 요청</strong><p>연락처: '+esc(data.phone.slice(0,3)+'-****-'+data.phone.slice(-4))+'</p><p>'+esc(data.concern)+'</p><p>'+esc(data.income)+' · '+esc(data.debt)+'</p><p>'+esc(data.time||'연락 시간 미선택')+'</p></div><p class="desc">급하게 확인할 기한이 있다면 전화로 먼저 알려주세요.</p><a class="intake-phone-link" href="tel:050714146860">0507-1414-6860 바로 전화 ↗</a><button type="button" class="primary" id="restart">다른 상담 요청 작성하기</button>';
+   root.innerHTML='<div class="finish-confirmation"><div class="finish-symbol" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" focusable="false"><path d="m8 16 5 5L24 10" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><p class="finish-label">접수 완료</p><h3 tabindex="-1">상담 신청이<br>정상 접수되었습니다.</h3><p class="finish-message">해람법무사에 상담 요청이 전달되었습니다.<br>다시 신청하지 않으셔도 됩니다.</p></div><div class="finish-contact"><span>연락받으실 번호</span><strong>'+esc(data.phone.slice(0,3)+'-****-'+data.phone.slice(-4))+'</strong><p>해람법무사에서 이 번호로 연락드릴게요.</p></div><button type="button" class="primary finish-acknowledge" id="finish-confirm">확인했어요</button>'+'<div class="summary"><strong>'+esc(data.name||'고객')+'님의 상담 요청</strong><p>연락처: '+esc(data.phone.slice(0,3)+'-****-'+data.phone.slice(-4))+'</p><p>'+esc(data.concern)+'</p><p>'+esc(data.income)+' · '+esc(data.debt)+'</p><p>'+esc(data.time||'연락 시간 미선택')+'</p></div><p class="desc">급하게 확인할 기한이 있다면 전화로 먼저 알려주세요.</p><a class="intake-phone-link" href="tel:050714146860">0507-1414-6860 바로 전화 ↗</a><button type="button" class="finish-restart" id="restart">다른 상담 요청 작성하기</button>';
+   document.getElementById('finish-confirm').addEventListener('click',()=>{history.replaceState(null,'',location.pathname+location.search);const title=document.querySelector('h1');if(title){title.setAttribute('tabindex','-1');title.focus({preventScroll:true});}window.scrollTo({top:0,behavior:'instant'});});
    document.getElementById('restart').addEventListener('click',()=>{Object.keys(data).forEach(k=>data[k]='');Object.assign(calculator,{income:'',debt:'',people:'',result:null,money:{income:null,debt:null}});requestId=null;startedAt=Date.now();step=1;render(true);});
   }
   if(step===2)root.querySelector('[data-back]').addEventListener('click',()=>{step=1;render(true);});
