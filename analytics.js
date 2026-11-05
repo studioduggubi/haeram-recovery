@@ -7,7 +7,7 @@
  let config=options||{};
  if(!options&&doc){try{config=JSON.parse(doc.getElementById('analytics-config')?.textContent||'{}');}catch{}}
  const sections=new Set(['home','solutions','start','about','process','youtube','faq','contact']);
- const terms=new Set(['인천개인회생','인천개인파산','인천개인회생법무사','인천개인파산법무사','인천서구개인회생','인천개인회생상담','인천개인회생신청','인천개인회생비용','인천개인파산상담','해람법무사','김해람법무사','인천서해구개인회생']);
+ const terms=new Set(['인천개인회생','인천개인파산','인천개인회생법무사','인천개인파산법무사','인천서구개인회생','인천개인회생상담','인천개인회생신청','인천개인회생비용','인천개인파산상담','해람법무사','김해람법무사','인천서해구개인회생','개인회생','개인회생상담','회생상담']);
  const errors=new Set(['phone_required','invalid_phone','consent_required','backend_unconfirmed']);
  const placements=new Set(['header','mobile_dock','home','solutions','start','about','process','youtube','faq','contact','footer']);
  const dl=env.dataLayer=env.dataLayer||[];
