@@ -39,7 +39,7 @@
   // A disclosure changes content height, never the reader's viewport.
   // Suspend snapping before layout changes; restore only on deliberate scrolling.
   const root = document.documentElement;
-  const disclosureSelector = '.solution-details,.faq-list details,.memo-details,.cost-disclosure';
+  const disclosureSelector = '.solution-details,.faq-list details,.memo-details,.cost-disclosure,.intake-widget details';
   document.addEventListener('click', event => {
     const summary = event.target.closest('summary');
     const details = summary?.parentElement;
