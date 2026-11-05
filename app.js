@@ -119,30 +119,64 @@
     }));
   }
 
-  const officeImage = document.getElementById("office-photo");
-  if (officeImage) {
-    const photoButtons = [...document.querySelectorAll(".office-thumb")];
-    let selectedPhoto = 0;
-    const selectPhoto = index => {
-      selectedPhoto = (index + photoButtons.length) % photoButtons.length;
-      const button = photoButtons[selectedPhoto];
-      officeImage.src = button.dataset.photoSrc;
-      officeImage.alt = button.dataset.photoAlt;
-      document.getElementById("office-photo-title").textContent = button.dataset.photoTitle;
-      document.getElementById("office-photo-count").textContent = String(selectedPhoto + 1).padStart(2,"0") + " / " + String(photoButtons.length).padStart(2,"0");
-      photoButtons.forEach(choice => {
-        const active = choice === button;
-        choice.classList.toggle("is-active", active);
-        choice.setAttribute("aria-pressed", String(active));
-      });
-      document.getElementById("office-photo-status").textContent = "선택한 사진: " + button.dataset.photoTitle;
-      if (window.matchMedia("(max-width:800px)").matches) {
-        const strip = button.parentElement;
-        strip.scrollTo({left:button.offsetLeft - strip.offsetLeft - 4,behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"});
-      }
+  const office = document.querySelector('.office-slideshow');
+  if (office) {
+    const photos = JSON.parse(document.getElementById('office-photos').textContent);
+    const images = [...office.querySelectorAll('.office-slide')];
+    const control = office.querySelector('.office-autoplay');
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let current = 0, photoIndex = 0, timer = 0, finishTimer = 0;
+    let visible = false, userPaused = false, hovered = false, focused = false, changing = false;
+    const canPlay = () => visible && !document.hidden && !reduced.matches && !userPaused && !hovered && !focused;
+    const clearTimer = () => { window.clearTimeout(timer); timer = 0; };
+    const schedule = () => {
+      clearTimer();
+      if (canPlay() && !changing) timer = window.setTimeout(advance, 6500);
     };
-    photoButtons.forEach((button, index) => button.addEventListener("click", () => selectPhoto(index)));
-    document.getElementById("office-previous").addEventListener("click", () => selectPhoto(selectedPhoto - 1));
-    document.getElementById("office-next").addEventListener("click", () => selectPhoto(selectedPhoto + 1));
+    const updateControl = () => {
+      control.hidden = reduced.matches;
+      control.setAttribute('aria-pressed', String(userPaused));
+      control.setAttribute('aria-label', userPaused ? '사무실 사진 자동 전환 재생' : '사무실 사진 자동 전환 일시정지');
+      control.classList.toggle('is-paused', userPaused);
+    };
+    async function advance() {
+      clearTimer();
+      if (!canPlay() || changing) return;
+      changing = true;
+      const next = 1 - current, nextIndex = (photoIndex + 1) % photos.length;
+      const incoming = images[next], outgoing = images[current];
+      incoming.src = photos[nextIndex].src;
+      try { await incoming.decode(); }
+      catch { changing = false; schedule(); return; }
+      if (!canPlay()) { changing = false; schedule(); return; }
+      incoming.alt = photos[nextIndex].alt;
+      incoming.removeAttribute('aria-hidden');
+      outgoing.setAttribute('aria-hidden', 'true');
+      outgoing.alt = '';
+      incoming.classList.add('is-incoming');
+      // Keep the outgoing image opaque underneath the dissolve, avoiding a white flash.
+      finishTimer = window.setTimeout(() => {
+        outgoing.classList.remove('is-current');
+        incoming.classList.add('is-current');
+        incoming.classList.remove('is-incoming');
+        current = next; photoIndex = nextIndex; changing = false;
+        schedule();
+      }, 1600);
+    }
+    control.addEventListener('click', () => { userPaused = !userPaused; updateControl(); schedule(); });
+    office.addEventListener('pointerenter', event => { if (event.pointerType === 'mouse') { hovered = true; clearTimer(); } });
+    office.addEventListener('pointerleave', () => { hovered = false; schedule(); });
+    office.addEventListener('focusin', () => { focused = true; clearTimer(); });
+    office.addEventListener('focusout', event => { focused = office.contains(event.relatedTarget); schedule(); });
+    document.addEventListener('visibilitychange', schedule);
+    reduced.addEventListener('change', () => { updateControl(); schedule(); });
+    const observer = new IntersectionObserver(entries => {
+      visible = entries[0].isIntersecting && entries[0].intersectionRatio >= 0.25;
+      schedule();
+    }, {threshold:0.25});
+    observer.observe(office);
+    window.addEventListener('pagehide', clearTimer);
+    window.addEventListener('pageshow', schedule);
+    updateControl();
   }
 })();
