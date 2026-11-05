@@ -1,0 +1,27 @@
+{
+  "tool": "built-in image_gen",
+  "mode": "built-in",
+  "transparent_background": true,
+  "references": [
+    "assets/brand-character.webp",
+    "assets/consult-guide-3d-v2.jpg"
+  ],
+  "assets": [
+    {
+      "key": "haeram-about-character-v1",
+      "prompt": "Use case: stylized-concept. Asset type: a production website brand character illustration, not a photorealistic person. Reference image 1 is the official Haeram judicial-scrivener brand mascot: preserve the same softly rounded female character identity, long dark side-parted hair, large simple dark oval eyes, small kind smile, brown tailored trouser suit and ivory top. Reference image 2 is an approved illustration and is a material/style consistency reference. Match the warm matte polymer-clay texture, tactile understated finish, ivory, cocoa brown, muted sage and restrained brass palette, soft diffuse studio light. The character should feel friendly, calm and professionally helpful to adults. True transparent background; no checkerboard, background tile, circle, arch, frame or environment. No photorealism, no writing, no letters, numerals, logos, watermarks, legal certificates or seals. No plants or flowers. Render a cohesive compact waist-up object group in a square composition: the entire head, hair, both hands and props must be fully visible with safe outer margins; fill around 82% of the canvas. Finish the lower silhouette naturally behind the props, with no hard crop across the arms or head. Only a tiny soft contact shadow, no large cast shadow. Subject and pose: the Haeram character explains an open ivory reference book held at chest level. One hand supports the book and the other calmly points to its blank page. The book has two broad shallow embossed lines but no written text. Two closed ivory and muted-sage reference books sit beside the lower torso, creating a natural base. Pose in a gentle three-quarter angle, looking warmly toward the viewer with a slight orientation toward the right. The composition communicates careful explanations and preparation; no extra floating symbols or unrelated objects.",
+      "source": "/Users/leekyeongcheol/.codex/generated_images/01a1a615-adbd-7a50-a240-0e4d29d12c2d/exec-8352b20a-392d-49ea-b59c-3382d718bc8b.png",
+      "original": "assets/generated-originals/haeram-about-character-v1.png",
+      "web": "assets/haeram-about-character-v1.png",
+      "bytes": 377995
+    },
+    {
+      "key": "haeram-contact-character-v1",
+      "prompt": "Use case: stylized-concept. Asset type: a production website brand character illustration, not a photorealistic person. Reference image 1 is the official Haeram judicial-scrivener brand mascot: preserve the same softly rounded female character identity, long dark side-parted hair, large simple dark oval eyes, small kind smile, brown tailored trouser suit and ivory top. Reference image 2 is an approved illustration and is a material/style consistency reference. Match the warm matte polymer-clay texture, tactile understated finish, ivory, cocoa brown, muted sage and restrained brass palette, soft diffuse studio light. The character should feel friendly, calm and professionally helpful to adults. True transparent background; no checkerboard, background tile, circle, arch, frame or environment. No photorealism, no writing, no letters, numerals, logos, watermarks, legal certificates or seals. No plants or flowers. Render a cohesive compact waist-up object group in a square composition: the entire head, hair, both hands and props must be fully visible with safe outer margins; fill around 82% of the canvas. Finish the lower silhouette naturally behind the props, with no hard crop across the arms or head. Only a tiny soft contact shadow, no large cast shadow. Subject and pose: the Haeram character warmly welcomes a conversation, turning slightly toward the left. One hand makes a relaxed open-palm invitation at shoulder level and the other rests on a slim closed ivory document folder at waist level. Two small chunky overlapping speech bubbles, one ivory and one muted sage, float close beside the shoulder, with three raised round brown dots in the front bubble. The character's expression is gentle, reassuring and attentive. Keep the speech bubbles near the character so this forms one compact cohesive silhouette. No telephone, no writing, no other icons or objects.",
+      "source": "/Users/leekyeongcheol/.codex/generated_images/01a1a615-adbd-7a50-a240-0e4d29d12c2d/exec-3b4ceab1-ba10-44e1-9ecf-9c017b8a48f5.png",
+      "original": "assets/generated-originals/haeram-contact-character-v1.png",
+      "web": "assets/haeram-contact-character-v1.png",
+      "bytes": 370031
+    }
+  ]
+}

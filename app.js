@@ -37,9 +37,11 @@
     heading.focus({preventScroll:true});
   };
   const createMemo = () => {
-    return "해람 상담 준비 메모\n\n" + ["알아보는 내용","소득 상황","가장 큰 고민","준비 상태"].map((label, i) => label + ": " + questions[i].options[answers[i]]).join("\n") + "\n\n상담할 때 연락받기 편한 방법과 시간을 함께 알려주세요.";
+    return "상담 준비 메모\n\n" + ["알아보는 내용","소득 상황","가장 큰 고민","준비 상태"].map((label, i) => label + ": " + questions[i].options[answers[i]]).join("\n") + "\n\n상담할 때 연락받기 편한 방법과 시간을 함께 알려주세요.";
   };
   function showQuestion(focus = false) {
+    document.getElementById("dock-copy").hidden = true;
+    document.getElementById("dock-start").hidden = false;
     const q = questions[currentStep];
     count.textContent = String(currentStep + 1).padStart(2,"0") + " / 04";
     progress.style.width = ((currentStep + 1) * 25) + "%";
@@ -53,38 +55,41 @@
     if (back) back.addEventListener("click", () => { currentStep--; showQuestion(true); });
     if (focus) focusHeading();
   }
+  async function copyMemo() {
+    if (answers.length !== questions.length) return;
+    try {
+      if (!navigator.clipboard) throw new Error("clipboard unavailable");
+      await navigator.clipboard.writeText(createMemo());
+      const toast = document.getElementById("toast");
+      toast.hidden = false;
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => { toast.hidden = true; }, 2500);
+    } catch {
+      const slot = document.getElementById("copy-fallback-slot");
+      if (!slot.querySelector("textarea")) {
+        const label = document.createElement("label");
+        label.htmlFor = "memo-text";
+        label.textContent = "아래 메모를 선택해 복사해주세요.";
+        const textarea = document.createElement("textarea");
+        textarea.id = "memo-text"; textarea.className = "copy-fallback";
+        textarea.readOnly = true; textarea.value = createMemo();
+        slot.append(label, textarea);
+      }
+      const textarea = slot.querySelector("textarea");
+      textarea.focus({preventScroll:true}); textarea.select();
+    }
+  }
+  document.getElementById("dock-copy").addEventListener("click", copyMemo);
   function showResult() {
+    document.getElementById("dock-copy").hidden = false;
+    document.getElementById("dock-start").hidden = true;
     count.textContent = "준비 완료";
     progress.style.width = "100%";
     const note = answers[2] === 1 || answers[3] === 2
-      ? "법원 문서가 있다면 문서 이름, 받은 날짜, 적힌 기한을 먼저 확인해 주세요. 상담할 때 이 내용을 가장 먼저 알려주시면 좋습니다."
-      : answers[1] === 2
-      ? "소득이 없다는 이유만으로 절차가 정해지지는 않아요. 건강·근로 가능성·재산·채무 경위를 함께 이야기해주세요."
-      : answers[1] === 1
-      ? "수입이 일정하지 않다면 최근의 입금 내역과 대략적인 수입·지출을 떠올려보세요. 상담에서 계속적인 소득을 어떻게 확인할지 함께 살펴볼 수 있습니다."
-      : "대략적인 월소득·생활비·채무와 보유 재산을 떠올려보세요. 정확하지 않은 부분은 상담에서 확인할 수 있습니다.";
-    container.innerHTML = '<div class="question-result"><h3 tabindex="-1">상담 메모가 정리됐어요.</h3><p>내 이야기를 꺼내는 데 필요한 작은 준비입니다.</p><details class="memo-details"><summary>내 답변 4개 보기 <span aria-hidden="true">+</span></summary><div class="memo">' + escapeHtml(createMemo()) + '</div></details><div class="result-tips">' + note + '</div><div class="result-actions"><button class="button button-light" id="copy-memo" type="button">메모 복사하기</button><a class="button button-dark" href="#contact">상담 방법 보기 ↗</a></div><button class="result-reset" type="button">← 답변 다시 살펴보기</button><p class="result-selected-note">이 메모는 신청 가능 여부나 법원 결과를 판단한 내용이 아닙니다.</p><div id="copy-fallback-slot"></div></div>';
-    document.getElementById("copy-memo").addEventListener("click", async () => {
-      try {
-        if (!navigator.clipboard) throw new Error("clipboard unavailable");
-        await navigator.clipboard.writeText(createMemo());
-        const toast = document.getElementById("toast");
-        toast.hidden = false;
-        clearTimeout(toastTimer);
-        toastTimer = setTimeout(() => { toast.hidden = true; }, 2500);
-      } catch {
-        const slot = document.getElementById("copy-fallback-slot");
-        if (!slot.querySelector("textarea")) {
-          const label = document.createElement("label");
-          label.htmlFor = "memo-text";
-          label.textContent = "아래 메모를 직접 선택해 복사해주세요.";
-          const textarea = document.createElement("textarea");
-          textarea.id = "memo-text"; textarea.className = "copy-fallback";
-          textarea.readOnly = true; textarea.value = createMemo();
-          slot.append(label,textarea); textarea.focus(); textarea.select();
-        }
-      }
-    });
+      ? "법원 문서가 있다면 문서 이름과 받은 날짜, 기한을 먼저 알려주세요."
+      : "대략적인 소득·생활비·채무·재산을 떠올려보세요. 모르는 부분은 상담에서 함께 확인하면 됩니다.";
+    container.innerHTML = '<div class="question-result"><h3 tabindex="-1">내 이야기가 정리됐어요.</h3><p>꼭 해람과 함께하지 않으셔도 괜찮아요.<br>어디에서 상담받으시든 이 메모를 보여주세요.<br>상황을 설명하는 데 작은 도움이 될 거예요.</p><div class="result-actions"><button class="button button-dark" id="copy-memo" type="button">메모 복사하기 ↗</button><a class="text-link" href="#contact">해람 상담 안내 →</a></div><details class="memo-details"><summary>정리된 답변 보기 <span aria-hidden="true">+</span></summary><div class="memo">' + escapeHtml(createMemo()) + '</div></details><div class="result-tips">' + note + '</div><button class="result-reset" type="button">← 답변 수정하기</button><p class="result-selected-note">상담 준비용 메모이며, 신청 자격이나 법원 결과를 판단하지 않습니다.</p><div id="copy-fallback-slot"></div></div>';
+    document.getElementById("copy-memo").addEventListener("click", copyMemo);
     container.querySelector(".result-reset").addEventListener("click", () => { currentStep = 0; showQuestion(true); });
     focusHeading();
   }
@@ -110,9 +115,7 @@
         choice.querySelector(".youtube-choice-state").firstChild.textContent = active ? "선택한 영상 " : "이 영상 보기 ";
       });
       document.getElementById("youtube-status").textContent = "선택한 영상: " + title;
-      if (window.matchMedia("(max-width:900px)").matches) {
-        videoPlayer.closest(".youtube-feature-screen").scrollIntoView({block:"start",behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"});
-      }
+
     }));
   }
 

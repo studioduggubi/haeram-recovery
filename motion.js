@@ -36,18 +36,35 @@
       photographs.forEach(image => image.style.removeProperty('--depth-shift'));
     } else requestPaint();
   });
-  document.addEventListener('toggle', event => {
-    if (!event.target.matches('.solution-details,.faq-list details,.memo-details')) return;
-    document.documentElement.classList.toggle('reading-expanded', !!document.querySelector('.solution-details[open],.faq-list details[open],.memo-details[open]'));
-    requestPaint();
-  }, true);
+  // A disclosure changes content height, never the reader's viewport.
+  // Suspend snapping before layout changes; restore only on deliberate scrolling.
+  const root = document.documentElement;
+  const disclosureSelector = '.solution-details,.faq-list details,.memo-details,.cost-disclosure';
+  document.addEventListener('click', event => {
+    const summary = event.target.closest('summary');
+    const details = summary?.parentElement;
+    if (!details?.matches(disclosureSelector)) return;
+    event.preventDefault();
+    const x = window.scrollX, y = window.scrollY;
+    root.classList.add('disclosure-active');
+    details.open = !details.open;
+    window.scrollTo({left:x, top:y, behavior:'instant'});
+    requestAnimationFrame(() => {
+      window.scrollTo({left:x, top:y, behavior:'instant'});
+      requestPaint();
+    });
+  });
+  const resumeSnap = () => {
+    if (!document.querySelector(disclosureSelector.split(',').map(s => s + '[open]').join(','))) root.classList.remove('disclosure-active');
+  };
+  window.addEventListener('wheel', resumeSnap, {passive:true});
+  window.addEventListener('touchmove', resumeSnap, {passive:true});
+  document.addEventListener('keydown', event => {
+    if (['ArrowDown','ArrowUp','PageDown','PageUp','Home','End'].includes(event.key)) resumeSnap();
+  });
   const questions = document.getElementById('question-content');
   if (questions) new MutationObserver(() => {
-    const section = document.getElementById('start');
-    const result = !!questions.querySelector('.question-result');
-    section.classList.toggle('has-result', result);
-    section.classList.toggle('is-answering', !result && !document.getElementById('step-count').textContent.startsWith('01'));
-    if (!questions.querySelector('.memo-details[open]')) document.documentElement.classList.toggle('reading-expanded', !!document.querySelector('.solution-details[open],.faq-list details[open]')); 
+    document.getElementById('start').classList.toggle('has-result', !!questions.querySelector('.question-result'));
   }).observe(questions, {childList:true});
   requestPaint();
 })();
