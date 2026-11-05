@@ -163,7 +163,12 @@
         schedule();
       }, 1600);
     }
-    control.addEventListener('click', () => { userPaused = !userPaused; updateControl(); schedule(); });
+    control.addEventListener('click', () => {
+      userPaused = !userPaused;
+      // An explicit replay also resumes while the button still holds focus or hover.
+      if (!userPaused) { focused = false; hovered = false; }
+      updateControl(); schedule();
+    });
     office.addEventListener('pointerenter', event => { if (event.pointerType === 'mouse') { hovered = true; clearTimer(); } });
     office.addEventListener('pointerleave', () => { hovered = false; schedule(); });
     office.addEventListener('focusin', () => { focused = true; clearTimer(); });
