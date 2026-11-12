@@ -22,11 +22,21 @@
   const videoPlayer = document.getElementById("haeram-youtube-player");
   if (videoPlayer) {
     const videoChoices = [...document.querySelectorAll(".youtube-choice")];
+    const videoPoster = document.getElementById("youtube-poster");
+    if (videoPoster) {
+      videoPoster.hidden = false;
+      videoPoster.addEventListener("click", () => {
+        if (videoChoices[0]) videoChoices[0].click();
+        videoPlayer.focus();
+      });
+    }
     videoChoices.forEach(button => button.addEventListener("click", () => {
       const id = button.dataset.videoId;
       const title = button.dataset.videoTitle;
       if (!/^[A-Za-z0-9_-]{11}$/.test(id)) return;
       videoPlayer.src = "https://www.youtube.com/embed/" + id + "?autoplay=1&rel=0&playsinline=1";
+      videoPlayer.hidden = false;
+      if (videoPoster) videoPoster.hidden = true;
       videoPlayer.title = "해람법무사 — " + title;
       document.getElementById("youtube-topic").textContent = button.dataset.videoTopic;
       document.getElementById("youtube-title").textContent = title;
