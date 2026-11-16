@@ -85,7 +85,85 @@ html,html.reading-expanded,html.disclosure-active{scroll-snap-type:none!importan
   <script src="amount-input.js?v=22" defer></script>
   <script src="request-id.js?v=24" defer></script>
   <script src="intake.js?v=30" defer></script>
-  <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "LegalService", "@id": "https://recovery.haeram-law.com/#office", "name": "해람법무사 사무소", "url": "https://recovery.haeram-law.com/", "image": "https://recovery.haeram-law.com/assets/office-consultation.jpg", "logo": "https://recovery.haeram-law.com/assets/official-logo.png", "telephone": "+82-507-1414-6860", "address": {"@type": "PostalAddress", "streetAddress": "가정로 406 A동 2층 211호", "addressLocality": "서구", "addressRegion": "인천광역시", "addressCountry": "KR"}, "areaServed": {"@type": "City", "name": "인천광역시"}, "description": "김해람 법무사의 개인회생·개인파산 상담 및 법무사 업무 안내", "sameAs": ["https://haeram-law.com/", "https://blog.naver.com/haeram_kim", "https://www.youtube.com/@해람법무사"]}, {"@type": "WebPage", "@id": "https://recovery.haeram-law.com/#webpage", "url": "https://recovery.haeram-law.com/", "name": "인천 개인회생·개인파산 상담 | 해람법무사", "inLanguage": "ko-KR", "about": {"@id": "https://recovery.haeram-law.com/#office"}}]}</script>
+  <script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "LegalService",
+      "@id": "https://recovery.haeram-law.com/#office",
+      "name": "해람법무사 사무소",
+      "url": "https://recovery.haeram-law.com/",
+      "image": {
+        "@id": "https://recovery.haeram-law.com/#primary-image"
+      },
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://recovery.haeram-law.com/favicon.png",
+        "contentUrl": "https://recovery.haeram-law.com/favicon.png",
+        "width": 192,
+        "height": 192
+      },
+      "telephone": "+82-507-1414-6860",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "가정로 406 A동 2층 211호",
+        "addressLocality": "서구",
+        "addressRegion": "인천광역시",
+        "addressCountry": "KR"
+      },
+      "areaServed": {
+        "@type": "City",
+        "name": "인천광역시"
+      },
+      "description": "김해람 법무사의 개인회생·개인파산 상담 및 법무사 업무 안내",
+      "sameAs": [
+        "https://haeram-law.com/",
+        "https://blog.naver.com/haeram_kim",
+        "https://www.youtube.com/@해람법무사"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://recovery.haeram-law.com/#webpage",
+      "url": "https://recovery.haeram-law.com/",
+      "name": "인천 개인회생·개인파산 상담 | 해람법무사",
+      "inLanguage": "ko-KR",
+      "about": {
+        "@id": "https://recovery.haeram-law.com/#office"
+      },
+      "primaryImageOfPage": {
+        "@id": "https://recovery.haeram-law.com/#primary-image"
+      },
+      "mainEntity": {
+        "@id": "https://recovery.haeram-law.com/#office"
+      },
+      "isPartOf": {
+        "@id": "https://recovery.haeram-law.com/#website"
+      }
+    },
+    {
+      "@type": "ImageObject",
+      "@id": "https://recovery.haeram-law.com/#primary-image",
+      "url": "https://recovery.haeram-law.com/assets/office-consultation.jpg",
+      "contentUrl": "https://recovery.haeram-law.com/assets/office-consultation.jpg",
+      "width": 1000,
+      "height": 749,
+      "caption": "상담 테이블과 자격증 액자가 있는 해람법무사 사무실",
+      "representativeOfPage": true
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://recovery.haeram-law.com/#website",
+      "url": "https://recovery.haeram-law.com/",
+      "name": "해람법무사",
+      "alternateName": "해람 법무사 사무소",
+      "inLanguage": "ko-KR",
+      "publisher": {
+        "@id": "https://recovery.haeram-law.com/#office"
+      }
+    }
+  ]
+}</script>
 <script type="application/json" id="intake-config">{"endpoint": "https://script.google.com/macros/s/AKfycbwXOQLVbRO9_maKKApJipKzFv1RS8U3-fy2kZ3qV4_9blN-CrCFNCQLccTyebJBwqjX/exec", "consentVersion": "haeram-intake-2026-11-05-v2", "bookingUrl": "https://map.naver.com/p/entry/place/2000521595?placePath=%2Fbooking%3Fentry%3Dpll%26from%3Dnx%26fromNxList%3Dtrue&placeSearchOption=entry%3Dpll%26fromNxList%3Dtrue&searchType=place&c=15.00,0,0,0,dh"}</script>
 </head>
 <body class="visual-version">
